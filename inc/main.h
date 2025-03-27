@@ -19,45 +19,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
+#ifndef MAIN_H
+#define MAIN_H
 
 /**
- * @file leds.c
- * @brief Definicion de la biblioteca para el control de LEDs
+ * @file main.h
+ * @brief Declaración de la función principal del programa
+ *
+ * Este archivo contiene la declaración de la función principal del programa que se ejecuta al
+ * iniciar el sistema. El propósito de esta función es iniciar el programa y manejar los errores
+ * de manera básica. El valor de retorno indica si la ejecución fue exitosa o si hubo un error.
  */
 
-
 /* === Inclusión de archivos de cabecera ====================================================== */
-#include "leds.h"
+
 /* No se incluyen archivos adicionales */
 
 /* === Cabecera para C++ ====================================================================== */
 
-/* === Definición de macros  ========================================================= */
-//! @brief Mascara para apagar todos los leds
-#define ALL_LEDS_OFF      0X0000
-//! @brief Desplazamiento de los LEDs para obtener la mascara
-#define LED_TO_BIT_OFFSET 1
-//! @brief Constante con el primer bit para generar una mascara
-#define FIRST_BIT            1
-//! @brief Constante del estado del led para generar una mascara
-#define LED_STATUS            1
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/* === Declaraciones de tipos de datos privadas ============================================ */
+/* === Definición de macros públicas ========================================================= */
 
-/* No se definen tipos de datos en este archivo */
-
-/* === Declaraciones de variables privadas =================================================== */
-//! @brief Variabla privada para almacener la direccion del puerto de salida
-static uint16_t* port_address;
-
-/* === Declaraciones de funciones privadas =================================================== */
-/**
- * @brief Funcion privada para convertir el numero de un led en una mascara de bits
- *
- *@param led Numero de led para el que se desea generar la mascara de bits
- *@return uint16_t Mascara de bits con 1 en la posicion correspondiente al led
- */
-static uint16_t LedToMask(uint8_t led);
+/* No se definen macros en este archivo */
 
 /* === Declaraciones de tipos de datos públicos ============================================ */
 
@@ -69,66 +55,22 @@ static uint16_t LedToMask(uint8_t led);
 
 /* === Declaraciones de funciones públicas =================================================== */
 
-/* === Implementacion de funciones privadas =================================================== */
-uint16_t LedToMask(uint8_t led){
-return (FIRST_BIT<<(led-LED_TO_BIT_OFFSET));
-}
-
 /**
- * @brief 
+ * @brief Función principal del sistema, se ejecuta al iniciar el programa
  *
+ * La función `main` es el punto de entrada del programa. Es la primera función que se ejecuta
+ * cuando se inicia el sistema. Generalmente, en esta función se configuran los recursos del sistema
+ * y se inicia la ejecución principal del programa. El valor de retorno indica el estado de la
+ * ejecución: un valor cero indica éxito, y un valor negativo indica algún tipo de error.
  *
+ * @return int El valor de retorno es cero si la ejecución fue exitosa, negativo si hubo un error.
  */
-void LedsInit(uint16_t *port){
-port_address= port;
-*port_address=ALL_LEDS_OFF;
-}
+int main(void);
 
-/**
- * @brief 
- *
- *
- */
-void LedTurnOnSingle(uint8_t led){
-*port_address|=LedToMask(led);
-}
-
-/**
- * @brief 
- *
- *
- */
-void LedTurnOffSingle(uint8_t led){
-*port_address&=~LedToMask(led);
-}
-
-/**
- * @brief 
- *
- *
- */
-void LedTurnOnAll(void){
-*port_address = 0xffff;
-}
-
-
-/**
- * @brief 
- *
- *
- */
-void LedTurnOffAll(void){
-*port_address = 0x0000;
-}
-
-/**
- * @brief 
- *
- *
- */
-uint8_t IsLedOn(uint8_t led){
-return *port_address>>(led-LED_TO_BIT_OFFSET)&LED_STATUS;
-}
 /* === Fin de la documentación ============================================================= */
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* MAIN_H */

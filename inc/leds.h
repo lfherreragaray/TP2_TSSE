@@ -75,6 +75,27 @@ void LedTurnOnSingle(uint8_t led);
 *@param led Numero de led que se desea apagar (1 a 16)
 */
 void LedTurnOffSingle(uint8_t led);
+
+/**
+*@brief Funcion para prender todo el puerto de leds
+*
+*
+*/
+ void LedTurnOnAll(void);
+
+/**
+*@brief Funcion para apagar todo el puerto de leds
+*
+*
+*/
+ void LedTurnOffAll(void);
+ 
+/**
+*@brief Funcion para apagar todo el puerto de leds
+*
+*@param led Numero de led que se desea consultar (1 a 16)
+*/
+uint8_t IsLedOn(uint8_t led);
 /* === Fin de la documentación ============================================================= */
 
 #ifdef __cplusplus
