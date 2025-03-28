@@ -19,12 +19,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
-
 /**
  * @file leds.c
  * @brief Definicion de la biblioteca para el control de LEDs
  */
-
 
 /* === Inclusión de archivos de cabecera ====================================================== */
 #include "leds.h"
@@ -34,13 +32,15 @@ SPDX-License-Identifier: MIT
 
 /* === Definición de macros  ========================================================= */
 //! @brief Mascara para apagar todos los leds
-#define ALL_LEDS_OFF      0X0000
+#define ALL_LEDS_OFF 0X0000
+//! @brief Mascara para prender todos los leds
+#define ALL_LEDS_ON 0XFFFF
 //! @brief Desplazamiento de los LEDs para obtener la mascara
 #define LED_TO_BIT_OFFSET 1
 //! @brief Constante con el primer bit para generar una mascara
-#define FIRST_BIT            1
+#define FIRST_BIT 1
 //! @brief Constante del estado del led para generar una mascara
-#define LED_STATUS            1
+#define LED_STATUS 1
 
 /* === Declaraciones de tipos de datos privadas ============================================ */
 
@@ -48,7 +48,7 @@ SPDX-License-Identifier: MIT
 
 /* === Declaraciones de variables privadas =================================================== */
 //! @brief Variabla privada para almacener la direccion del puerto de salida
-static uint16_t* port_address;
+static uint16_t * port_address;
 
 /* === Declaraciones de funciones privadas =================================================== */
 /**
@@ -70,65 +70,62 @@ static uint16_t LedToMask(uint8_t led);
 /* === Declaraciones de funciones públicas =================================================== */
 
 /* === Implementacion de funciones privadas =================================================== */
-uint16_t LedToMask(uint8_t led){
-return (FIRST_BIT<<(led-LED_TO_BIT_OFFSET));
+uint16_t LedToMask(uint8_t led) {
+    return (FIRST_BIT << (led - LED_TO_BIT_OFFSET));
 }
 
 /**
- * @brief 
+ * @brief
  *
  *
  */
-void LedsInit(uint16_t *port){
-port_address= port;
-*port_address=ALL_LEDS_OFF;
+void LedsInit(uint16_t * port) {
+    port_address = port;
+    LedTurnOffAll();
 }
 
 /**
- * @brief 
+ * @brief
  *
  *
  */
-void LedTurnOnSingle(uint8_t led){
-*port_address|=LedToMask(led);
+void LedTurnOnSingle(uint8_t led) {
+    *port_address |= LedToMask(led);
 }
 
 /**
- * @brief 
+ * @brief
  *
  *
  */
-void LedTurnOffSingle(uint8_t led){
-*port_address&=~LedToMask(led);
+void LedTurnOffSingle(uint8_t led) {
+    *port_address &= ~LedToMask(led);
 }
 
 /**
- * @brief 
+ * @brief
  *
  *
  */
-void LedTurnOnAll(void){
-*port_address = 0xffff;
-}
-
-
-/**
- * @brief 
- *
- *
- */
-void LedTurnOffAll(void){
-*port_address = 0x0000;
+void LedTurnOnAll(void) {
+    *port_address = ALL_LEDS_ON;
 }
 
 /**
- * @brief 
+ * @brief
  *
  *
  */
-uint8_t IsLedOn(uint8_t led){
-return *port_address>>(led-LED_TO_BIT_OFFSET)&LED_STATUS;
+void LedTurnOffAll(void) {
+    *port_address = ALL_LEDS_OFF;
+}
+
+/**
+ * @brief
+ *
+ *
+ */
+uint8_t IsLedOn(uint8_t led) {
+    return *port_address >> (led - LED_TO_BIT_OFFSET) & LED_STATUS;
 }
 /* === Fin de la documentación ============================================================= */
-
-
